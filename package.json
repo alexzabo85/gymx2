@@ -1,0 +1,60 @@
+{
+  "name": "my-divjoy-project",
+  "version": "0.1.0",
+  "private": true,
+  "keywords": [
+    "divjoy"
+  ],
+  "dependencies": {
+    "@material-ui/core": "4.11.3",
+    "@material-ui/icons": "4.11.2",
+    "@material-ui/lab": "4.0.0-alpha.57",
+    "@stripe/stripe-js": "1.11.0",
+    "auth0": "2.33.0",
+    "auth0-js": "9.14.3",
+    "concurrently": "^6.2.1",
+    "dotenv": "8.2.0",
+    "es6-promisify": "6.1.0",
+    "express": "4.17.1",
+    "history": "4.10.1",
+    "json-server": "0.16.3",
+    "jsonwebtoken": "8.5.1",
+    "jwks-rsa": "1.7.0",
+    "mailchimp-api-v3": "1.14.0",
+    "node-fetch": "2.6.1",
+    "query-string": "6.13.8",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-hook-form": "6.15.1",
+    "react-query": "3.13.11",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "4.0.2",
+    "stripe": "8.132.0",
+    "use-local-storage-state": "9.0.2"
+  },
+  "scripts": {
+    "dev": "concurrently \"clear\" \"npm run json-server\" \"node api\" \"npm start\"",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "json-server": "json-server --watch db.json --port 8000",
+    "stripe-webhook": "stripe listen --forward-to localhost:3000/api/stripe-webhook"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:8080"
+}
