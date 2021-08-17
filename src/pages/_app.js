@@ -16,6 +16,7 @@ import Footer from "./../components/Footer";
 import { AuthProvider } from "./../util/auth.js";
 import { ThemeProvider } from "./../util/theme.js";
 import { QueryClientProvider } from "./../util/db.js";
+import Gymx from "./gymx.";
 
 function App(props) {
   return (
@@ -32,6 +33,8 @@ function App(props) {
 
               <Switch>
                 <Route exact path="/" component={IndexPage} />
+
+                <Route exact path="/gymx" component={Gymx} />
 
                 <Route exact path="/about" component={AboutPage} />
 
