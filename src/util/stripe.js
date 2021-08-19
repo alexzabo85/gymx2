@@ -1,9 +1,9 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { apiRequest } from "./util";
 import { getStripePriceId } from "./prices";
-/*****************************
 let stripe;
-// Load the Stripe script
+/*****************************
+// uncomment to activate stripe
 loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY, {
   // Pin to specific version of the Stripe API
   apiVersion: "2020-08-27",
