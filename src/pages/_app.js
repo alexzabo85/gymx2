@@ -8,7 +8,7 @@ import ContactPage from "./contact";
 import DashboardPage from "./dashboard";
 import SettingsPage from "./settings";
 import PurchasePage from "./purchase";
-import AuthPage from "./auth";
+import AuthPage from "./AuthPage";
 import { Switch, Route, Router } from "./../util/router.js";
 import Auth0Callback from "./auth0-callback.js";
 import NotFoundPage from "./not-found.js";
@@ -16,7 +16,9 @@ import Footer from "./../components/Footer";
 import { AuthProvider } from "./../util/auth.js";
 import { ThemeProvider } from "./../util/theme.js";
 import { QueryClientProvider } from "./../util/db.js";
-import Gymx from "./gymx.";
+import Gymx from "./gymx";
+import FeedPage from "./FeedPage";
+
 
 function App(props) {
   return (
@@ -45,6 +47,8 @@ function App(props) {
                 <Route exact path="/contact" component={ContactPage} />
 
                 <Route exact path="/dashboard" component={DashboardPage} />
+
+                <Route exact path="/feed" component={FeedPage} />
 
                 <Route
                   exact

@@ -1,0 +1,173 @@
+{
+  "users": [
+    {
+      "id": "auth0|611ce9c2acf16a0071af5112",
+      "uid": "auth0|611ce9c2acf16a0071af5112",
+      "email": "111111@gmail.com",
+      "name": "Alex Alex",
+      "gender": "Male",
+      "age": "35",
+      "weight": "85[kg]",
+      "height": "178[cm]",
+      "programDetails": {
+        "type": "mass/Aerobic",
+        "start": "1/1/2021",
+        "end": "1/3/2021",
+        "trainer": "buddha"
+      },
+      "programSession": [
+        [
+          {
+            "muscle": "chest",
+            "device": "16",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          },
+          {
+            "muscle": "back",
+            "device": "17",
+            "intensity": "10[kg]",
+            "pattern": "3*7(30)",
+            "note": "do it"
+          },
+          {
+            "muscle": "arms",
+            "device": "10",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          },
+          {
+            "muscle": "chest",
+            "device": "16",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          },
+          {
+            "muscle": "back",
+            "device": "17",
+            "intensity": "10[kg]",
+            "pattern": "3*7(30)",
+            "note": "do it"
+          },
+          {
+            "muscle": "arms",
+            "device": "10",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          }
+        ],
+        [
+          {
+            "muscle": "chest",
+            "device": "16",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          },
+          {
+            "muscle": "back",
+            "device": "17",
+            "intensity": "10[kg]",
+            "pattern": "3*7(30)",
+            "note": "do it"
+          },
+          {
+            "muscle": "arms",
+            "device": "10",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          },
+          {
+            "muscle": "chest",
+            "device": "16",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          },
+          {
+            "muscle": "back",
+            "device": "17",
+            "intensity": "10[kg]",
+            "pattern": "3*7(30)",
+            "note": "do it"
+          },
+          {
+            "muscle": "arms",
+            "device": "10",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          }
+        ],
+        [
+          {
+            "muscle": "chest",
+            "device": "16",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          },
+          {
+            "muscle": "back",
+            "device": "17",
+            "intensity": "10[kg]",
+            "pattern": "3*7(30)",
+            "note": "do it"
+          },
+          {
+            "muscle": "arms",
+            "device": "10",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          },
+          {
+            "muscle": "chest",
+            "device": "16",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          },
+          {
+            "muscle": "back",
+            "device": "17",
+            "intensity": "10[kg]",
+            "pattern": "3*7(30)",
+            "note": "do it"
+          },
+          {
+            "muscle": "arms",
+            "device": "10",
+            "intensity": "10[kg]",
+            "pattern": "3*5(60)",
+            "note": "do it"
+          }
+        ]
+      ]
+    },
+    {
+      "id": "auth0|611cd044acf16a0071af4778",
+      "uid": "auth0|611cd044acf16a0071af4778",
+      "email": "2@gmail.com"
+    }
+  ],
+  "items": [
+    {
+      "owner": "auth0|611ce9c2acf16a0071af5112",
+      "name": "kk",
+      "createdAt": 1629312943922,
+      "id": 3
+    },
+    {
+      "owner": "auth0|611ce9c2acf16a0071af5112",
+      "name": "lll",
+      "createdAt": 1629312953705,
+      "id": 4
+    }
+  ]
+}

@@ -66,6 +66,12 @@ function Navbar(props) {
             <Link to="/">
               <img src={logo} alt="Logo" className={classes.logo} />
             </Link>
+            <Button color="inherit" component={Link} to="/gymx">
+              GymX
+            </Button>
+            <Button color="inherit" component={Link} to="/feed">
+              Tips Feed
+            </Button>
             <div className={classes.spacer} />
             <Hidden smUp={true} implementation="css">
               <IconButton

@@ -7,6 +7,7 @@
   ],
   "dependencies": {
     "@material-ui/core": "4.11.3",
+    "@material-ui/data-grid": "^4.0.0-alpha.37",
     "@material-ui/icons": "4.11.2",
     "@material-ui/lab": "4.0.0-alpha.57",
     "@stripe/stripe-js": "1.11.0",
@@ -33,7 +34,9 @@
     "use-local-storage-state": "9.0.2"
   },
   "scripts": {
-    "dev": "concurrently \"clear\" \"npm run json-server\" \"node api\" \"npm start\"",
+    "dev": "concurrently \"clear\"   \"npm start\" \"  PORT=8080 ./api2/nodemon\" ",
+    "dev2": "concurrently \"clear\"  \"node api2\" \"npm start\" \"npm run json-server\"",
+    "dev3": "PORT=8080 node server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

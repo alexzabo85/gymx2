@@ -1,7 +1,7 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { apiRequest } from "./util";
 import { getStripePriceId } from "./prices";
-
+/*****************************
 let stripe;
 // Load the Stripe script
 loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY, {
@@ -11,7 +11,7 @@ loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY, {
   // Set stripe so all functions below have it in scope
   stripe = stripeInstance;
 });
-
+*****************************/
 export async function redirectToCheckout(planId) {
   // Create a checkout session
   const session = await apiRequest("stripe-create-checkout-session", "POST", {

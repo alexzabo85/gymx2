@@ -3,27 +3,46 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { useAuth } from "./../util/auth.js";
+import { useAuth } from "./../util/myAuth.js";
 import { useForm } from "react-hook-form";
+// import { signin } from '../util/api-auth.js'
+
 
 function AuthForm(props) {
   const auth = useAuth();
   const [pending, setPending] = useState(false);
   const { handleSubmit, register, errors, getValues } = useForm();
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+    error: '',
+    redirectToReferrer: false
+  })
+
 
   const submitHandlersByType = {
-    signin: ({ email, pass }) => {
+    signinMyAuth: ({ email, pass }) => {
+      alert(JSON.stringify(auth))
       return auth.signin(email, pass).then((user) => {
         // Call auth complete handler
         props.onAuth(user);
       });
     },
+
+    signinAuth0: ({ email, pass }) => {
+      return auth.signin(email, pass).then((user) => {
+        // Call auth complete handler
+        props.onAuth(user);
+      });
+    },
+
     signup: ({ email, pass }) => {
       return auth.signup(email, pass).then((user) => {
         // Call auth complete handler
         props.onAuth(user);
       });
     },
+
     forgotpass: ({ email }) => {
       return auth.sendPasswordResetEmail(email).then(() => {
         setPending(false);
@@ -34,6 +53,7 @@ function AuthForm(props) {
         });
       });
     },
+
     changepass: ({ pass }) => {
       return auth.confirmPasswordReset(pass).then(() => {
         setPending(false);
@@ -44,7 +64,58 @@ function AuthForm(props) {
         });
       });
     },
+
+    signin: async (user) => {
+      // alert(`-> ssubmitHandlersByType.signin() ${JSON.stringify(user)}`)
+      let res;
+      try {
+        let response = await fetch('/api/auth/signin/', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify(user)
+        })
+
+        res = await response.json()
+        return { ...res.payload };
+      } catch (err) {
+        console.log(err)
+      }
+      props.onAuth(res.payload || {});
+    },
+
+    signout: async () => {
+      try {
+        let response = await fetch('/api/auth/signout/', { method: 'GET' })
+        return await response.json()
+      } catch (err) {
+        console.log(err)
+      }
+    }
   };
+
+  // Handle form submission
+  // const onSubmitAuth0 = ({ email, password }) => {
+  //   const user = {
+  //     email: email || undefined,
+  //     password: password || undefined
+  //   }
+
+  //   signin(user).then((data) => {
+  //     if (data.error) {
+  //       setValues({ ...values, error: data.error })
+  //     } else {
+  //       // alert(JSON.stringify(data))
+  //       auth.authenticate(data, () => {
+  //         props.onAuth(user);
+  //         setValues({ ...values, error: '', redirectToReferrer: true })
+  //       })
+  //     }
+  //   })
+  // };
 
   // Handle form submission
   const onSubmit = ({ email, pass }) => {
@@ -54,7 +125,10 @@ function AuthForm(props) {
     // Call submit handler for auth type
     submitHandlersByType[props.type]({
       email,
-      pass,
+      pass: pass,
+    }).then((payload) => {
+      alert(`Welcome ${JSON.stringify(payload._id)}`)
+      props.onAuth(payload);
     }).catch((error) => {
       setPending(false);
       // Show error alert message
@@ -108,11 +182,7 @@ function AuthForm(props) {
             <TextField
               variant="outlined"
               type="password"
-              label="Confirm Password"
-              name="confirmPass"
-              error={errors.confirmPass ? true : false}
-              helperText={errors.confirmPass && errors.confirmPass.message}
-              fullWidth={true}
+
               inputRef={register({
                 required: "Please enter your password again",
                 validate: (value) => {

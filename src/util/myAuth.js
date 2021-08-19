@@ -5,9 +5,10 @@ import React, {
   useContext,
   createContext,
 } from "react";
-import auth0 from "./auth0";
+import auth0 from "./auth1";
 // import { signin } from "./api-auth";
 import { useUser, createUser, updateUser } from "./db";
+// import { useUser, createUser, updateUser } from "./api-auth";
 import { CustomError } from "./util";
 import { history } from "./router";
 import PageLoader from "./../components/PageLoader";
@@ -38,6 +39,7 @@ function useAuthProvider() {
   // Format final user object and merge extra data from database
   const finalUser = usePrepareUser(user);
 
+
   // Handle response from authentication functions
   const handleAuth = async (user) => {
     // Create the user in the database
@@ -50,15 +52,51 @@ function useAuthProvider() {
   };
 
   const signup = (email, password) => {
-    return auth0.extended
-      .signupAndAuthorize({
-        email: email,
-        password: password,
-      })
-      .then(handleAuth);
+    return handleAuth({
+      email: email,
+      password: password,
+    })
   };
 
-  const signin = (email, password) => {
+  const signinMyAuth = async (authParams) => {
+
+  };
+
+  const signin = async (email, password) => {
+    // return signinMyAuth({
+    //   username: email,
+    //   password: password,
+    // })
+
+    // alert(`-> ssubmitHandlersByType.signin() ${JSON.stringify(user)}`)
+    let user;
+    try {
+      let response = await fetch('/api/auth/signin/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          username: email,
+          password: password,
+        })
+      })
+
+      user = (await response.json()).payload
+    } catch (err) {
+      console.log(err)
+    }
+    // props.onAuth(res.payload || {});
+    setUser(user);
+    return { ...user };
+
+
+
+  };
+
+  const signinAuth0 = (email, password) => {
     return auth0.extended
       .login({
         username: email,
