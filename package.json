@@ -34,6 +34,7 @@
     "use-local-storage-state": "9.0.2"
   },
   "scripts": {
+    "kill": "kill $(lsof -t -i:8080)",
     "dev": "concurrently \"clear\"   \"npm start\" \"  PORT=8080 ./api2/nodemon\" ",
     "dev2": "concurrently \"clear\"  \"node api2\" \"npm start\" \"npm run json-server\"",
     "dev3": "PORT=8080 node server.js",

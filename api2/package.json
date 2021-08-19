@@ -1,0 +1,53 @@
+{
+  "name": "restful-service",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "kill": "kill $(lsof -t -i:8080)",
+    "dev": "cross-env NODE_ENV=test PORT=8080 nodemon",
+    "start": "set NODE_ENV=production &&  node ./bin/www",
+    "test": "cross-env NODE_ENV=test ./node_modules/.bin/jest --forceExit --detectOpenHandles --testTimeout=10000",
+    "test.2": "cross-env NODE_ENV=test nodemonjest   --forceExit --detectOpenHandles --testTimeout=10000",
+    "test.win.create_users": "jest users",
+    "test.win.create_accounts": "node .\\tests\\account.tst.js",
+    "test.win.create_products": "node .\\tests\\product.tst.js",
+    "test2": "cross-env NODE_ENV=test jest --collectCoverage --forceExit --detectOpenHandles --testTimeout=10000",
+    "supertest.1": "node ./tests/product.supertest.js",
+    "supertest.2": "node .\\tests\\product.supertest.js"
+  },
+  "dependencies": {
+    "compress": "^0.99.0",
+    "compression": "^1.7.4",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "ethereum-cryptography": "^0.1.3",
+    "ethereumjs-wallet": "^1.0.1",
+    "express": "~4.16.1",
+    "express-jwt": "^6.0.0",
+    "express-ws": "^4.0.0",
+    "formidable": "^1.2.2",
+    "helmet": "^4.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.11.6",
+    "morgan": "~1.9.1",
+    "request": "^2.88.2",
+    "socket.io": "^3.0.4",
+    "superagent": "^6.1.0",
+    "web3": "^1.3.3",
+    "ws": "^7.4.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^26.6.3",
+    "supertest": "^6.1.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
+}
