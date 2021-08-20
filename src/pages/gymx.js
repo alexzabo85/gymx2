@@ -1,5 +1,8 @@
 
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { lighten, makeStyles } from '@material-ui/core/styles';
 import {
   Avatar,
   Card,
@@ -18,21 +21,48 @@ import {
   Typography,
   Box,
   Button,
+  Chip,
+  Divider,
+  Grid,
+  List,
+  ListItem
 } from '@material-ui/core'
+
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AccordionActions from '@material-ui/core/AccordionActions';
+
 import { red } from '@material-ui/core/colors';
-// import { makeStyles } from '@material-ui/core/styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 // import SessionTable from './sessionTable'
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+
 
 import { useAuth } from "./../util/auth.js";
-import { Redirect } from 'react-router-dom';
-import { useUser } from '../util/db.js';
+// import { Redirect } from 'react-router-dom';
+// import { useUser } from '../util/db.js';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import ProfileCard from "./../components/ProfileCard";
+
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+// import Avatar from '@material-ui/core/Avatar';
+// import IconButton from '@material-ui/core/IconButton';
+import FormGroup from '@material-ui/core/FormGroup';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Checkbox from '@material-ui/core/Checkbox';
+// import Grid from '@material-ui/core/Grid';
+// import Typography from '@material-ui/core/Typography';
+import FolderIcon from '@material-ui/icons/Folder';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+
 // import gymxDb from ('../db.json');
 
 const gymxDb = require("../db.json");
@@ -389,7 +419,7 @@ function EnhancedTable(props) {
             onClick={() => { alert('Completed') }}
           >Session Completed
           </Button> */}
-          <ProgressBar />
+          {/* <ProgressBar /> */}
         </Box>
       </Paper>
       {/* <FormControlLabel
@@ -408,10 +438,26 @@ export default function ProgramPage(props) {
   auth.user = gymxDb.users[0];
   return (auth.user ?
     <>
-      <Spacer className={classes.toolbar} />
+      {/* <Spacer className={classes.toolbar} /> */}
+      {<ProfileCard
+        bgColor="light"
+        size="medium"
+        bgImage=""
+        bgImageOpacity={1}
+        info={{
+          avatar: "https://uploads.divjoy.com/pravatar-150x-5.jpeg",
+          name: "Sarah Kline",
+          subtitle: "Sarah Kline subtitle 123",
+          gender: "Female",
+          age: "35",
+          height: "178[cm]",
+          weight: "79[kg]",
+        }}
+      />}
+      {/* <Spacer className={classes.toolbar} /> */}
 
       <Container maxWidth="sm">                             {/* user+program details */}
-        <Card elevation={12}>                               {/* userdetails */}
+        {null && <Card elevation={12}>                               {/* userdetails */}
           <CardHeader
             avatar={
               <Avatar aria-label="recipe" className={classes.avatar}>
@@ -435,7 +481,7 @@ export default function ProgramPage(props) {
 
             title="Paella dish"
           /> */}
-        </Card>
+        </Card>}
         <Spacer className={classes.toolbar} />
         <TableContainer component={Paper} elevation={8}>    {/* program details */}
           <Table aria-label="program details">
@@ -460,12 +506,20 @@ export default function ProgramPage(props) {
       </Container>
       <Spacer className={classes.toolbar} />
 
-      <Container maxWidth="md">                             {/* program details */}
+      <Container component={Paper} className={classes.paper} elevation={20} maxWidth="sm">                             {/* program details */}
+        <paper elevation={20}>
+          <Spacer className={classes.toolbar} />
 
-        <EnhancedTable />
-
+          <SessionList2 />
+          {/* <EnhancedTable /> */}
+          {/* <SessionList /> */}
+          <Box alignContent="center">
+            <ProgressBar />
+          </Box>
+        </paper>
 
       </Container>
+      <Spacer className={classes.toolbar} />
       {/* <SessionTable2></SessionTable2> */}
     </> : <>
       {/* <Redirect to='/auth/signin' /> */}
@@ -556,6 +610,9 @@ function ProgressBar() {
 
   return (
     < div className={classes.root} >
+      <Box display="flex">
+
+      </Box>
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
@@ -574,6 +631,45 @@ function ProgressBar() {
         })}
       </Stepper>
       <div>
+        <Box
+          display="flex"
+          flexDirection="column"
+          p={1}
+          m={1}
+          bgcolor="background.paper"
+        >
+          <Box p={1} >
+            {null && activeStep === steps.length ? (
+              <Box item>
+                <Typography className={classes.instructions}>
+                  All steps completed - you&apos;re finished
+                </Typography>
+                <Button onClick={handleReset} className={classes.button}>
+                  Reset
+                </Button>
+              </Box>
+            ) : (
+              <Box item>
+                {/* <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography> */}
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  className={classes.button}
+                >
+                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                </Button>
+              </Box>
+            )}          </Box>
+          <Box p={1} bgcolor="grey.300">
+            Item 2
+          </Box>
+          <Box p={1} bgcolor="grey.300">
+            Item 3
+          </Box>
+        </Box>
+
         {activeStep === steps.length ? (
           <div>
             <Typography className={classes.instructions}>
@@ -606,3 +702,338 @@ function ProgressBar() {
 
 /** ********************** */
 
+
+
+// import React from 'react';
+// import { makeStyles } from '@material-ui/core/styles';
+
+const useStylesSessionList = makeStyles({
+  root: {
+    width: '100%',
+  },
+});
+
+function SessionList() {
+  const classes = useStylesSessionList();
+
+  return (
+    <div className={classes.root}>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-label="Expand"
+          aria-controls="additional-actions1-content"
+          id="additional-actions1-header"
+        >
+          <FormControlLabel
+            aria-label="Acknowledge"
+            onClick={(event) => event.stopPropagation()}
+            onFocus={(event) => event.stopPropagation()}
+            control={<Checkbox />}
+            label="I acknowledge that I should stop the click event propagation"
+          />
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography color="textSecondary">
+            The click event of the nested action will propagate up and expand the accordion unless
+            you explicitly stop it.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-label="Expand"
+          aria-controls="additional-actions2-content"
+          id="additional-actions2-header"
+        >
+          <FormControlLabel
+            aria-label="Acknowledge"
+            onClick={(event) => event.stopPropagation()}
+            onFocus={(event) => event.stopPropagation()}
+            control={<Checkbox />}
+            label="I acknowledge that I should stop the focus event propagation"
+          />
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography color="textSecondary">
+            The focus event of the nested action will propagate up and also focus the accordion
+            unless you explicitly stop it.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-label="Expand"
+          aria-controls="additional-actions3-content"
+          id="additional-actions3-header"
+        >
+          <FormControlLabel
+            aria-label="Acknowledge"
+            onClick={(event) => event.stopPropagation()}
+            onFocus={(event) => event.stopPropagation()}
+            control={<Checkbox />}
+            label="I acknowledge that I should provide an aria-label on each action that I add"
+          />
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography color="textSecondary">
+            If you forget to put an aria-label on the nested action, the label of the action will
+            also be included in the label of the parent button that controls the accordion
+            expansion.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+    </div>
+  );
+}
+
+
+
+const useStylesDetailedAccordion = makeStyles((theme) => ({
+  root: {
+    // width: theme.spacing(4),
+    margin: ''
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
+  icon: {
+    verticalAlign: 'bottom',
+    height: 20,
+    width: 20,
+  },
+  details: {
+    alignItems: 'center',
+  },
+  column: {
+    flexBasis: '33.33%',
+  },
+  helper: {
+    borderLeft: `2px solid ${theme.palette.divider}`,
+    padding: theme.spacing(1, 2),
+  },
+  link: {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+}));
+
+function SessionList2() {
+  const classes = useStylesDetailedAccordion();
+
+  const info =
+  {
+    intensity: "10[kg]",
+    repetitions: "10",
+    sets: "3",
+    rest: "45[sec]",
+    note: "do it with a smile",
+  }
+
+
+  return (
+    <div className={classes.root}>
+      {[1, 1, 1].map((data, idx) => (<>
+        <Accordion defaultExpanded={false}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1c-content"
+            id="panel1c-header"
+          >
+            <FormControlLabel
+              aria-label="Acknowledge"
+              onClick={(event) => event.stopPropagation()}
+              onFocus={(event) => event.stopPropagation()}
+              control={<Checkbox />}
+              label="Upper Chest | Device 6"
+            />
+            {/* <div className={classes.column}>
+            <Typography className={classes.heading}>Location</Typography>
+
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}>Select trip destination</Typography>
+          </div> */}
+          </AccordionSummary>
+          <AccordionDetails className={classes.details}>
+            <div className={classes.column} />
+            {/* <div className={classes.column}></div> */}
+            <Box className={classes.column}>
+              {/* <Chip label="Barbados" onDelete={() => { }} /> */}
+              <Typography variant="caption" align="right">
+                some extra notes
+              </Typography>
+            </Box>
+            <div className={classes.column}></div>
+            <Box className={clsx(classes.column, classes.helper)}>
+              {/* <div className={clsx(classes.column, classes.helper)}> */}
+
+              <Typography variant="caption" align="right">
+                <b>Device 6</b>
+              </Typography>
+
+              {/* <InteractiveList /> */}
+              {/* <ListItemSecondaryAction */}
+              <List dense>
+
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <FolderIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary="intensity" />
+                  <ListItemSecondaryAction>
+                    <ListItemText primary={info.intensity} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+
+
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <FolderIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary="Repitions" />
+                  <ListItemSecondaryAction>
+                    <ListItemText primary={info.repetitions} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+
+
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <FolderIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary="Sets" />
+                  <ListItemSecondaryAction>
+                    <ListItemText primary={info.sets} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <FolderIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary="Rest" />
+                  <ListItemSecondaryAction>
+                    <ListItemText primary={info.rest} />
+                  </ListItemSecondaryAction>
+                </ListItem>
+
+
+
+              </List>
+              {/* <Box textAlign="right">
+              <Typography fontSize={16} variant="caption" textAlign="right">
+                <br />
+                10 [kg]
+                <br />
+                15 [repetitions]
+                <br />
+                x3 [sets]
+                <br />
+                <a href="#secondary-heading-and-columns" className={classes.link}>
+                  Learn more
+                </a>
+              </Typography>
+            </Box> */}
+            </Box>
+          </AccordionDetails>
+          <Divider />
+          <AccordionActions>
+            <Button size="small">Cancel</Button>
+            <Button size="small" color="primary">
+              Save
+            </Button>
+          </AccordionActions>
+        </Accordion >
+      </>))
+      }
+      {/* <paper elevation={20}>
+
+      </paper> */}
+    </div >
+  );
+}
+
+
+// import React from 'react';
+// import { makeStyles } from '@material-ui/core/styles';
+// import List from '@material-ui/core/List';
+// import ListItem from '@material-ui/core/ListItem';
+
+const useStylesInteractiveList = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    maxWidth: 752,
+  },
+  demo: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  title: {
+    margin: theme.spacing(4, 0, 2),
+  },
+}));
+
+function generate(element) {
+  return [0, 1, 2].map((value) =>
+    React.cloneElement(element, {
+      key: value,
+    }),
+  );
+}
+
+function InteractiveList() {
+  const classes = useStylesInteractiveList();
+  const [dense, setDense] = React.useState(false);
+  const [secondary, setSecondary] = React.useState(false);
+
+  return (
+    <div className={classes.root}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          {/* <Typography variant="h6" className={classes.title}>
+            Avatar with text and icon
+          </Typography> */}
+          <div className={classes.demo}>
+            <List dense={dense}>
+              {generate(
+                <ListItem>
+                  {/* <ListItemAvatar>fden
+                    <Avatar>
+                      <FolderIcon />
+                    </Avatar>
+                  </ListItemAvatar> */}
+                  <ListItemText
+                    primary="set"
+                    secondary={secondary ? 'Secondary text' : null}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>,
+              )}
+            </List>
+          </div>
+        </Grid>
+      </Grid>
+    </div>
+  );
+}
