@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "kill": "kill $(lsof -t -i:8080)",
-    "dev": "cross-env NODE_ENV=test PORT=8080 nodemon",
+    "dev": "cross-env NODE_ENV=test PORT=9000 nodemon",
     "start": "set NODE_ENV=production &&  node ./bin/www",
     "test": "cross-env NODE_ENV=test ./node_modules/.bin/jest --forceExit --detectOpenHandles --testTimeout=10000",
     "test.2": "cross-env NODE_ENV=test nodemonjest   --forceExit --detectOpenHandles --testTimeout=10000",

@@ -62,17 +62,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FolderIcon from '@material-ui/icons/Folder';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Redirect } from 'react-router-dom';
-
-
-// import gymxDb from ('../db.json');
-
-const gymxDb = require("../db.json");
-
-// import MyAppBar from '../components/MyAppBar';
-// image="../../public/logo192.png" 
-// import logo from '../../public/logo192.png'; // Tell webpack this JS file uses this image
-// import authHelper from './auth-helper';
-
+import Model, { IExerciseData, IMuscleStats } from 'react-body-highlighter';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
@@ -94,35 +84,6 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const useStylesTable = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  paper: {
-    width: '100%',
-    marginBottom: theme.spacing(2),
-  },
-  table: {
-    minWidth: 750,
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
-  completeButton: {
-    // width: '60%',
-    margin: theme.spacing(2),
-    justifyContent: 'center'
-
-  },
-}));
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -184,6 +145,9 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
+EnhancedTableToolbar.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+};
 
 function EnhancedTableHead(props) {
   // eslint-disable-next-line 
@@ -238,40 +202,7 @@ function EnhancedTableHead(props) {
       </TableRow>
     </TableHead>
   );
-}
-
-// function createData(muscle, device, intensity, pattern, note) {
-//   // pattern is a string in a form of A:B:C where A is set, B is repetitions, C is rest in seconds
-//   // deviceId is a link
-//   return { muscle, device, intensity, pattern, note };
-// }
-
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+};
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -283,161 +214,66 @@ EnhancedTableHead.propTypes = {
   // onRequestSort: PropTypes.func.isRequired,
 };
 
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
+// /* Back */
+// trapezius
+// upper-back
+// lower-back
+
+// /* Chest */
+// chest
+
+// /* Arms */
+// biceps
+// triceps
+// forearm
+// back-deltoids
+// front-deltoids
+
+// /* Abs */
+// abs
+// obliques
+
+// /* Legs */
+// adductor
+// hamstring
+// quadriceps
+// abductors
+// calves
+// gluteal
+
+// /* Head */
+// head
+// neck
 
 
-function EnhancedTable(props) {
-  const auth = useAuth();
-  const classes = useStylesTable();
-  // const [rows, setRows] = useState(auth.user.programSession[0] || []);
-  const [rows, setRows] = useState(gymxDb.users[0].programSession[0]);
+function HumanBodyPanel() {
+  const data = [
+    { name: 'Bench Press', muscles: ['chest', 'triceps', 'front-deltoids'] },
+    { name: 'Push Ups', muscles: ['chest'] },
+  ];
 
+  const handleClick = React.useCallback(({ muscle, data }) => {
+    const { exercises, frequency } = data;
 
-  const [selected, setSelected] = React.useState([]);
-  // eslint-disable-next-line 
-  const [order, setOrder] = React.useState('asc');
-  // eslint-disable-next-line 
-  const [orderBy, setOrderBy] = React.useState('calories');
-  // eslint-disable-next-line 
-  const [page, setPage] = React.useState(0);
-  // eslint-disable-next-line 
-  const [dense, setDense] = React.useState(true);
-  // eslint-disable-next-line 
-  const [rowsPerPage, setRowsPerPage] = React.useState(rows.length);
+    alert(`You clicked the ${muscle}! You've worked out this muscle ${frequency} times through the following exercises: ${JSON.stringify(exercises)}`)
 
-
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  }, [data]);
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              // onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {
-                // rows
-                stableSort(rows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const isItemSelected = isSelected(index);
-                    const labelId = `enhanced-table-checkbox-${index}`;
-
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => handleClick(event, index)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={index}
-                        selected={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={isItemSelected}
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        </TableCell>
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {row.muscle}
-                        </TableCell>
-                        <TableCell align="right">{row.device}</TableCell>
-                        <TableCell align="right">{row.intensity}</TableCell>
-                        <TableCell align="right">{row.pattern}</TableCell>
-                        <TableCell align="left">{row.note}</TableCell>
-                        {/* <TableCell align="right">{row.protein}</TableCell> */}
-                      </TableRow>
-                    );
-                  })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        {/* <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
-        <Box textAlign='center'>
-          {/* <Button className={classes.completeButton} variant="contained" color="primary"
-            onClick={() => { alert('Completed') }}
-          >Session Completed
-          </Button> */}
-          {/* <ProgressBar /> */}
-        </Box>
-      </Paper>
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
-    </div>
+    <Model
+      data={data}
+      style={{ width: '20rem', padding: '5rem' }}
+      onClick={handleClick}
+    />
   );
 }
-
 
 export default function ProgramPage(props) {
   const classes = useStyles();
 
   const auth = useAuth();
 
-  const demoUser = gymxDb.users[0];
+  // const auth.user = gymxDb.users[0];
 
 
   /** progress bar functions */
@@ -599,7 +435,6 @@ export default function ProgramPage(props) {
       // </div >
     );
   }
-
   /** ********************** */
 
 
@@ -624,11 +459,17 @@ export default function ProgramPage(props) {
       alignItems: 'center',
     },
     column: {
-      flexBasis: '33.33%',
+      flexBasis: '100.0%',
     },
     helper: {
       borderLeft: `2px solid ${theme.palette.divider}`,
-      padding: theme.spacing(1, 2),
+      // padding: theme.spacing(1, 1),
+    },
+    bodyPanel: {
+      border: '1px solid',
+      // borderLeft: `2px solid ${theme.palette.divider}`,
+      // padding: theme.spacing(3, 3),
+      // padding: '5'
     },
     link: {
       color: theme.palette.primary.main,
@@ -651,12 +492,15 @@ export default function ProgramPage(props) {
       note: "do it with a smile",
     }
 
+    const list = auth.user.programSession[0]
+    console.log(list)
+
 
     return (
       <div className={classes.root}>
-        {[1, 1, 1].map((data, idx) => (
+        {list.map((step, idx) => (
           // < >
-          <Accordion key={idx} defaultExpanded={false}>
+          <Accordion key={idx} defaultExpanded={true}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1c-content"
@@ -667,7 +511,8 @@ export default function ProgramPage(props) {
                 onClick={(event) => event.stopPropagation()}
                 onFocus={(event) => event.stopPropagation()}
                 control={<Checkbox />}
-                label="Upper Chest | Device 6"
+                // label="Upper Chest | Device 6"
+                label={`D${step.device} | ${step.muscle}`}
               />
               {/* <div className={classes.column}>
               <Typography className={classes.heading}>Location</Typography>
@@ -678,102 +523,101 @@ export default function ProgramPage(props) {
             </div> */}
             </AccordionSummary>
             <AccordionDetails className={classes.details}>
-              <div className={classes.column} />
+              {/* <div className={classes.column} /> */}
               {/* <div className={classes.column}></div> */}
-              <Box className={classes.column}>
-                {/* <Chip label="Barbados" onDelete={() => { }} /> */}
+              {/* <Box className={classes.column}>
                 <Typography variant="caption" align="right">
                   some extra notes
                 </Typography>
               </Box>
-              <div className={classes.column}></div>
-              <Box className={clsx(classes.column, classes.helper)}>
-                {/* <div className={clsx(classes.column, classes.helper)}> */}
+              <div className={classes.column}></div> */}
+              <div className={classes.root}>
+                <Grid container spacing={3}>
 
-                <Typography variant="caption" align="right">
-                  <b>Device 6</b>
-                </Typography>
+                  <Grid item xs={12}>
+                    <Box className={clsx(classes.column, classes.helper)}>
+                      {/* <div className={clsx(classes.column, classes.helper)}> */}
 
-                {/* <InteractiveList /> */}
-                {/* <ListItemSecondaryAction */}
-                <List dense>
+                      <Typography variant="caption" align="right">
+                        <b>{`Device D${step.device}`}</b>
+                      </Typography>
 
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <FolderIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="intensity" />
-                    <ListItemSecondaryAction>
-                      <ListItemText primary={info.intensity} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
+                      {/* <InteractiveList /> */}
+                      {/* <ListItemSecondaryAction */}
+                      <List dense>
 
-
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <FolderIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Repitions" />
-                    <ListItemSecondaryAction>
-                      <ListItemText primary={info.repetitions} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar>
+                              <FolderIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText primary="intensity" />
+                          <ListItemSecondaryAction>
+                            <ListItemText primary={step.intensity} />
+                          </ListItemSecondaryAction>
+                        </ListItem>
 
 
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <FolderIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Sets" />
-                    <ListItemSecondaryAction>
-                      <ListItemText primary={info.sets} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <FolderIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Rest" />
-                    <ListItemSecondaryAction>
-                      <ListItemText primary={info.rest} />
-                    </ListItemSecondaryAction>
-                  </ListItem>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar>
+                              <FolderIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText primary="Rep'" />
+                          <ListItemSecondaryAction>
+                            <ListItemText primary={step.pattern} />
+                          </ListItemSecondaryAction>
+                        </ListItem>
 
 
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar>
+                              <FolderIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText primary="Sets" />
+                          <ListItemSecondaryAction>
+                            <ListItemText primary={step.pattern} />
+                          </ListItemSecondaryAction>
+                        </ListItem>
 
-                </List>
-                {/* <Box textAlign="right">
-                <Typography fontSize={16} variant="caption" textAlign="right">
-                  <br />
-                  10 [kg]
-                  <br />
-                  15 [repetitions]
-                  <br />
-                  x3 [sets]
-                  <br />
-                  <a href="#secondary-heading-and-columns" className={classes.link}>
-                    Learn more
-                  </a>
-                </Typography>
-              </Box> */}
-              </Box>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar>
+                              <FolderIcon />
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText primary="Rest" />
+                          <ListItemSecondaryAction>
+                            <ListItemText primary={step.pattern} />
+                          </ListItemSecondaryAction>
+                        </ListItem>
+
+
+
+                      </List>
+                    </Box>
+
+                  </Grid>
+                  <Grid item xs={12}>
+                    <HumanBodyPanel ></HumanBodyPanel>
+                  </Grid>
+                </Grid>
+              </div>
+              {/* <div className={classes.column}></div> */}
             </AccordionDetails>
             <Divider />
-            {1 && <AccordionActions>
-              <Button size="small">Cancel</Button>
-              <Button size="small" color="primary">
-                Save
-              </Button>
-            </AccordionActions>}
+            {
+              1 && <AccordionActions>
+                <Button size="small">Cancel</Button>
+                <Button size="small" color="primary">
+                  Save
+                </Button>
+              </AccordionActions>
+            }
           </Accordion >
           // </>
         ))
@@ -796,44 +640,43 @@ export default function ProgramPage(props) {
   // weight: "79[kg]",
   // }
 
-  return (auth.user ?
-    <>
-      {<ProfileCard
-        bgColor="light"
-        size="medium"
-        bgImage=""
-        bgImageOpacity={1}
-        // title=
-        // info={info}
-        // {...info}
-        title={`Hello ${JSON.stringify(auth.user.email)} `}
-        name={`${auth.user.name || 'no name...'}`}
-        avatar={`https://uploads.divjoy.com/pravatar-150x-5.jpeg`}
-        gender={`${auth.user.gender}`}
-        age={`${auth.user.age || '35'}`}
-        height={`${auth.user.height || '178[cm]'}`}
-        weight={`${auth.user.weight || '82[kg]'}`}
-      />}
-      {/* <Spacer className={classes.toolbar} /> */}
+  return (!auth.user ? <> <Redirect to='/auth/signin' />  </> : <>
+    {<ProfileCard
+      bgColor="light"
+      size="medium"
+      bgImage=""
+      bgImageOpacity={1}
+      // title=
+      // info={info}
+      // {...info}
+      title={`Hello ${JSON.stringify(auth.user.email)} `}
+      name={`${auth.user.name || 'no name...'}`}
+      avatar={`https://uploads.divjoy.com/pravatar-150x-5.jpeg`}
+      gender={`${auth.user.gender}`}
+      age={`${auth.user.age || '__[y]'}`}
+      height={`${auth.user.height || '__[cm]'}`}
+      weight={`${auth.user.weight || '__[kg]'}`}
+    />}
+    {/* <Spacer className={classes.toolbar} /> */}
 
-      {/* user+program details */}
-      <Container maxWidth="sm">
-        {null && <Card elevation={12}>
-          <CardHeader
-            avatar={
-              <Avatar aria-label="recipe" className={classes.avatar}>
-                A
-              </Avatar>
-            }
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title={`${auth.user.name} `}  // "Alex Alexander (M)"
-            subheader={`${auth.user.gender} ${auth.user.age} [Y] ${auth.user.height} ${auth.user.weight} `}  // "Alex Alexander (M)"
-          />
-          {/* <CardMedia
+    {/* user+program details */}
+    <Container maxWidth="sm">
+      {null && <Card elevation={12}>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="recipe" className={classes.avatar}>
+              A
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={`${auth.user.name} `}  // "Alex Alexander (M)"
+          subheader={`${auth.user.gender} ${auth.user.age} [Y] ${auth.user.height} ${auth.user.weight} `}  // "Alex Alexander (M)"
+        />
+        {/* <CardMedia
             className={classes.media}
             // image="/static/images/cards/paella.jpg"
             // src
@@ -842,49 +685,47 @@ export default function ProgramPage(props) {
 
             title="Paella dish"
           /> */}
-        </Card>}
-        <Spacer className={classes.toolbar} />
-        <TableContainer component={Paper} elevation={8}>    {/* program details */}
-          <Table aria-label="program details">
-            <TableHead>
-              <TableRow>
-                {/* <TableCell colSpan={2} align='center' >{' '}</TableCell> */}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {Object.keys(demoUser.programDetails)
-                .map((name, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell component="th" scope="row">
-                      <b>{name}</b>
-                    </TableCell>
-                    <TableCell align="right">{demoUser.programDetails[name]}</TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Container>
+      </Card>}
       <Spacer className={classes.toolbar} />
+      <TableContainer component={Paper} elevation={8}>    {/* program details */}
+        <Table aria-label="program details">
+          <TableHead>
+            <TableRow>
+              {/* <TableCell colSpan={2} align='center' >{' '}</TableCell> */}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {Object.keys(auth.user.programDetails)
+              .map((name, idx) => (
+                <TableRow key={idx}>
+                  <TableCell component="th" scope="row">
+                    <b>{name}</b>
+                  </TableCell>
+                  <TableCell align="right">{auth.user.programDetails[name]}</TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
+    <Spacer className={classes.toolbar} />
 
-      <Container component={Paper} className={classes.paper} elevation={20} maxWidth="sm">   {/* program details */}
-        {/* <paper elevation={20}> */}
-        <Spacer className={classes.toolbar} />
-
-        <SessionList2 />
-        {/* <EnhancedTable /> */}
-        {/* <SessionList /> */}
-        <Box alignContent="center">
-          <ProgressBar />
-        </Box>
-        {/* </paper> */}
-
-      </Container>
-
+    {/* programSession */}
+    <Container component={Paper} className={classes.paper} elevation={20} maxWidth="sm">   {/* program details */}
+      {/* <paper elevation={20}> */}
       <Spacer className={classes.toolbar} />
-      {/* <SessionTable2></SessionTable2> */}
-    </> : <>
-      <Redirect to='/auth/signin' />
-    </>
-  )
+      <SessionList2 />
+      {/* <EnhancedTable /> */}
+      {/* <SessionList /> */}
+      <Box alignContent="center">
+
+        <ProgressBar />
+      </Box>
+      {/* </paper> */}
+
+    </Container>
+
+    <Spacer className={classes.toolbar} />
+
+  </>)
 }

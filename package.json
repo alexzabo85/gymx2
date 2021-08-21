@@ -26,6 +26,7 @@
     "node-fetch": "2.6.1",
     "query-string": "6.13.8",
     "react": "17.0.2",
+    "react-body-highlighter": "^2.0.5",
     "react-dom": "17.0.2",
     "react-hook-form": "6.15.1",
     "react-query": "3.13.11",

@@ -45,7 +45,7 @@ function ProfileCard(props) {
       <Container>
         <SectionHeader
           // title={props.subtitle}
-          title={'User Details'}
+          // title={'User Details'}
           size={4}
           textAlign="center"
         />
