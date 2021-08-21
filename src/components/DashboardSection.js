@@ -11,7 +11,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import LinkMui from "@material-ui/core/Link";
 import { Link, useRouter } from "./../util/router.js";
-import { useAuth } from "./../util/auth.js";
+import { useAuth } from "./../util/myAuth.js";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({

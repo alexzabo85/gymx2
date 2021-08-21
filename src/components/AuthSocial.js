@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { useAuth } from "./../util/auth.js";
+import { useAuth } from "./../util/myAuth.js";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +59,7 @@ function AuthSocial(props) {
       .signinWithProvider(provider)
       .then((user) => {
         localStorage.setItem("lastUsedAuthProvider", provider);
+        console.log(user)
         props.onAuth(user);
       })
       .catch((error) => {

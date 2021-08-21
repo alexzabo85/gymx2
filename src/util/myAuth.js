@@ -14,22 +14,50 @@ import { history } from "./router";
 import PageLoader from "./../components/PageLoader";
 import { getFriendlyPlanId } from "./prices";
 
+const allProviders = [
+  {
+    id: "myAuth",
+    name: "myAuth",
+  },
+  {
+    id: "auth0",
+    name: "password",
+  },
+  {
+    id: "google-oauth2",
+    name: "google",
+  },
+  {
+    id: "facebook",
+    name: "facebook",
+  },
+  {
+    id: "twitter",
+    name: "twitter",
+  },
+  {
+    id: "github",
+    name: "github",
+  },
+];
+
 // Whether to merge extra user data from database into auth.user
 const MERGE_DB_USER = true;
 
 const authContext = createContext();
 
-// Context Provider component that wraps your app and makes auth object
-// available to any child component that calls the useAuth() hook.
-export function AuthProvider({ children }) {
-  const auth = useAuthProvider();
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
-}
-
 // Hook that enables any component to subscribe to auth state
 export const useAuth = () => {
   return useContext(authContext);
 };
+
+// Context Provider component that wraps your app and makes auth object
+// available to any child component that calls the useAuth() hook.
+export function AuthProvider({ children }) {
+  const auth = useAuthProvider();
+  // alert(`create context with ${JSON.stringify(auth)}`)
+  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
+}
 
 // Provider hook that creates auth object and handles state
 function useAuthProvider() {
@@ -37,18 +65,20 @@ function useAuthProvider() {
   const [user, setUser] = useState(null);
 
   // Format final user object and merge extra data from database
-  const finalUser = usePrepareUser(user);
+  // const finalUser = { ...user };
+  // const finalUser = usePrepareUser(user);
 
 
   // Handle response from authentication functions
   const handleAuth = async (user) => {
     // Create the user in the database
     // Auth0 doesn't indicate if they are new so we attempt to create user every time
-    await createUser(user.sub, { email: user.email });
+    // await createUser(user.sub, { email: user.email });
 
     // Update user in state
     setUser(user);
     return user;
+    // return null;
   };
 
   const signup = (email, password) => {
@@ -58,18 +88,9 @@ function useAuthProvider() {
     })
   };
 
-  const signinMyAuth = async (authParams) => {
+  const signin = async (userCredentials = { email: '', pass: '' }) => {
 
-  };
-
-  const signin = async (email, password) => {
-    // return signinMyAuth({
-    //   username: email,
-    //   password: password,
-    // })
-
-    // alert(`-> ssubmitHandlersByType.signin() ${JSON.stringify(user)}`)
-    let user;
+    let jwtObject;
     try {
       let response = await fetch('/api/auth/signin/', {
         method: 'POST',
@@ -78,133 +99,40 @@ function useAuthProvider() {
           'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: JSON.stringify({
-          username: email,
-          password: password,
-        })
+        body: JSON.stringify(userCredentials)
       })
-
-      user = (await response.json()).payload
+      jwtObject = await response.json()
     } catch (err) {
       console.log(err)
     }
     // props.onAuth(res.payload || {});
-    setUser(user);
-    return { ...user };
-
-
-
+    setUser(jwtObject.payload.user);
+    return { ...jwtObject.payload.user };
   };
 
-  const signinAuth0 = (email, password) => {
-    return auth0.extended
-      .login({
-        username: email,
-        password: password,
-      })
-      .then(handleAuth);
-  };
-
-  const signinWithProvider = (name) => {
-    // Get current domain
-    const domain =
-      window.location.protocol +
-      "//" +
-      window.location.hostname +
-      (window.location.port ? ":" + window.location.port : "");
-
-    const providerId = allProviders.find((p) => p.name === name).id;
-
-    return auth0.extended
-      .popupAuthorize({
-        redirectUri: `${domain}/auth0-callback`,
-        connection: providerId,
-      })
-      .then(handleAuth);
-  };
-
-  const signout = () => {
-    return auth0.extended.logout();
-  };
-
-  const sendPasswordResetEmail = (email) => {
-    return auth0.extended.changePassword({
-      email: email,
-    });
-  };
-
-  const confirmPasswordReset = (password, code) => {
-    // This method is not needed with Auth0 but added in case your exported
-    // Divjoy template makes a call to auth.confirmPasswordReset(). You can remove it.
-    return Promise.reject(
-      new CustomError(
-        "not_needed",
-        "Auth0 handles the password reset flow for you. You can remove this section or page."
-      )
-    );
-  };
-
-  const updateEmail = (email) => {
-    return auth0.extended.updateEmail(email).then(() => {
-      setUser({ ...user, email });
-    });
-  };
-
-  const updatePassword = (password) => {
-    return auth0.extended.updatePassword(password);
-  };
-
-  // Update auth user and persist to database (including any custom values in data)
-  // Forms can call this function instead of multiple auth/db update functions
-  const updateProfile = async (data) => {
-    const { email, name, picture } = data;
-
-    // Update auth email
-    if (email) {
-      await auth0.extended.updateEmail(email);
-    }
-
-    // Update auth profile fields
-    if (name || picture) {
-      let fields = {};
-      if (name) fields.name = name;
-      if (picture) fields.picture = picture;
-      await auth0.extended.updateProfile(fields);
-    }
-
-    // Persist all data to the database
-    await updateUser(user.sub, data);
-
-    // Update user in state
-    const currentUser = await auth0.extended.getCurrentUser();
-    setUser(currentUser);
-  };
 
   useEffect(() => {
     // Subscribe to user on mount
-    const unsubscribe = auth0.extended.onChange(async (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(false);
-      }
-    });
+    // const unsubscribe = auth0.extended.onChange(async (user) => {
+    //   if (user) {
+    //     setUser(user);
+    //   } else {
+    //     setUser(false);
+    //   }
+    // });
+    const unsubscribe = (user) => {
+      setUser(false);
+
+    };
 
     // Unsubscribe on cleanup
     return () => unsubscribe();
   }, []);
 
   return {
-    user: finalUser,
+    user,
     signup,
-    signin,
-    signinWithProvider,
-    signout,
-    sendPasswordResetEmail,
-    confirmPasswordReset,
-    updateEmail,
-    updatePassword,
-    updateProfile,
+    signin
   };
 }
 
@@ -304,25 +232,3 @@ export const requireAuth = (Component) => {
   };
 };
 
-const allProviders = [
-  {
-    id: "auth0",
-    name: "password",
-  },
-  {
-    id: "google-oauth2",
-    name: "google",
-  },
-  {
-    id: "facebook",
-    name: "facebook",
-  },
-  {
-    id: "twitter",
-    name: "twitter",
-  },
-  {
-    id: "github",
-    name: "github",
-  },
-];

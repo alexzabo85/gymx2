@@ -12,27 +12,28 @@ import { makeStyles } from "@material-ui/core/styles";
 import PersonalMeter from "./personalMeter";
 
 const useStyles = makeStyles((theme) => ({
+  toolbar: theme.mixins.toolbar,
+
   avatar: {
     width: theme.spacing(10),
     height: theme.spacing(10),
   },
+
 }));
 
 function ProfileCard(props) {
   const classes = useStyles();
 
-  const items = [
-    {
-      avatar: "https://uploads.divjoy.com/pravatar-150x-5.jpeg",
-      name: "Sarah Kline",
-      gender: "Female",
-      age: "35",
-      height: "178[cm]",
-      weight: "79[kg]",
-
-    },
-
-  ];
+  // const items = [
+  //   {
+  //     avatar: "https://uploads.divjoy.com/pravatar-150x-5.jpeg",
+  //     name: "Sarah Kline",
+  //     gender: "Female",
+  //     age: "35",
+  //     height: "178[cm]",
+  //     weight: "79[kg]",
+  //   },
+  // ];
 
   return (
     <Section
@@ -43,57 +44,91 @@ function ProfileCard(props) {
     >
       <Container>
         <SectionHeader
+          // title={props.subtitle}
           title={'User Details'}
-          subtitle={props.info.subtitle}
           size={4}
           textAlign="center"
         />
-        <Grid container={true} justify="center" spacing={4}>
-          {items.map((item, index) => (
-            <Grid item={true} xs={12} sm={4} key={index}>
-              <>
-                <Card>
+        <Grid container justify="center" spacing={4}>
+          {/* {items.map((item, index) => ( */}
+          <Grid item xs={12} sm={6} >
+            <>
+              <Card>
 
-                  <Box display="flex" justifyContent="center" pt={3}>
-                    <Avatar
-                      src={item.avatar}
-                      alt={item.name}
-                      className={classes.avatar}
-                    />
-                  </Box>
+                <Box display="flex" justifyContent="center" pt={3}>
+                  <Avatar
+                    src={props.avatar}
+                    alt={props.name}
+                    className={classes.avatar}
+                  />
+                </Box>
 
-                  <CardContent>
-                    <Box textAlign="center">
-                      <Box mt={3}>
-                        {/* <Typography color="textSecondary" variant="body2" component="p">
-                        {item.name}
-                      </Typography> */}
-                        <Typography variant="body1" color="textPrimary" component="p">
-                          {item.gender} {item.age}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          component="p"
-                        >
-                          {item.company}
-                        </Typography>
-                        <Typography variant="body1" color="textPrimary" component="p">
-                          {item.height} / {item.weight}
-                        </Typography>
-                      </Box>
+                <CardContent>
+                  <Box textAlign="center">
+                    <Box mt={3}>
+                      <Typography color="textSecondary" variant="body2" component="p">
+                        {props.name}
+                      </Typography>
+                      <Typography variant="body1" color="textPrimary" component="p">
+                        {props.gender} {props.age}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {props.company}
+                      </Typography>
+                      <Typography variant="body1" color="textPrimary" component="p">
+                        <b>
+                          {props.height} / {props.weight}
+                        </b>
+                      </Typography>
                     </Box>
-                  </CardContent>
-                </Card>
-              </>
-            </Grid>
-          ))}
-        </Grid>
+                  </Box>
+                  <Spacer className={classes.toolbar} />
+                </CardContent>
+              </Card>
+            </>
+          </Grid>
+          <Grid item xs={12} sm={6} >
+            <>
+              <Card>
+                <CardContent>
+                  <Box textAlign="center">
+                    <Box mt={4}>
+                      {/* <Typography color="textSecondary" variant="body2" component="p">
+                        {props.name}
+                      </Typography>
+                      <Typography variant="body1" color="textPrimary" component="p">
+                        {props.gender} {props.age}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {props.company}
+                      </Typography>
+                      <Typography variant="body1" color="textPrimary" component="p">
+                        <b>{props.height} / {props.weight}</b>
+                      </Typography> */}
 
-        <PersonalMeter />
+                      <PersonalMeter />
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </>
+          </Grid>
+        </Grid>
       </Container>
     </Section>
   );
+}
+
+function Spacer(props) {
+  return <div className={props.className}></div>
 }
 
 export default ProfileCard;

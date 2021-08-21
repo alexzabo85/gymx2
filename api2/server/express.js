@@ -38,7 +38,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, '../../build')))
+// app.use(express.static(path.join(__dirname, 'public')))
 app.use(compress())
 app.use(helmet())
 app.use(cors())
@@ -57,17 +58,17 @@ app.use('/api/ec', ecRouter)
 // app.use('/', auctionRoutes)
 
 app.get('*', (req, res) => {
-    res.status(200).send({ status: '*' })
+  res.status(200).send({ status: '*' })
 })
 
 // Catch unauthorised errors
 app.use((err, req, res, next) => {
-    if (err.name === 'UnauthorizedError') {
-        res.status(401).json({ "error": err.name + ": " + err.message })
-    } else if (err) {
-        res.status(400).json({ "error": err.name + ": " + err.message })
-        console.log(err)
-    }
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).json({ "error": err.name + ": " + err.message })
+  } else if (err) {
+    res.status(400).json({ "error": err.name + ": " + err.message })
+    console.log(err)
+  }
 })
 
 

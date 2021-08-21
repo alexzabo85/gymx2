@@ -1,6 +1,6 @@
 import React from "react";
 import DashboardSection from "../components/DashboardSection";
-import { requireAuth } from "../util/auth.js";
+import { requireAuth } from "../util/myAuth.js";
 
 function FeedPage(props) {
   return (

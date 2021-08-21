@@ -14,7 +14,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import { Link } from "./../util/router.js";
-import { useAuth } from "./../util/auth.js";
+import { useAuth } from "./../util/myAuth.js";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({

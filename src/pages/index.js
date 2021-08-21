@@ -3,6 +3,7 @@ import HeroSection from "./../components/HeroSection";
 import ClientsSection from "./../components/ClientsSection";
 import FeaturesSection from "./../components/FeaturesSection";
 import TestimonialsSection from "./../components/TestimonialsSection";
+import ProfileCard from "./../components/ProfileCard";
 import NewsletterSection from "./../components/NewsletterSection";
 
 function IndexPage(props) {
@@ -36,6 +37,14 @@ function IndexPage(props) {
         title="Features"
         subtitle="All the features you need to move faster"
       />
+      <ProfileCard
+        bgColor="light"
+        size="medium"
+        bgImage=""
+        bgImageOpacity={1}
+        title="Here's what people are saying"
+        subtitle=""
+      />
       <TestimonialsSection
         bgColor="light"
         size="medium"
@@ -44,6 +53,7 @@ function IndexPage(props) {
         title="Here's what people are saying"
         subtitle=""
       />
+
       <NewsletterSection
         bgColor="default"
         size="medium"

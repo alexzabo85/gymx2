@@ -13,7 +13,7 @@ import { Switch, Route, Router } from "./../util/router.js";
 import Auth0Callback from "./auth0-callback.js";
 import NotFoundPage from "./not-found.js";
 import Footer from "./../components/Footer";
-import { AuthProvider } from "./../util/auth.js";
+import { AuthProvider } from "./../util/myAuth.js";
 import { ThemeProvider } from "./../util/theme.js";
 import { QueryClientProvider } from "./../util/db.js";
 import Gymx from "./gymx";

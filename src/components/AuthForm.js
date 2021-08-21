@@ -21,12 +21,36 @@ function AuthForm(props) {
 
 
   const submitHandlersByType = {
-    signinMyAuth: ({ email, pass }) => {
-      alert(JSON.stringify(auth))
-      return auth.signin(email, pass).then((user) => {
+
+    signin: (userCredentials = { email: '', pass: '' }) => {
+      // alert('auth: ' + JSON.stringify(auth))
+      return auth.signin(userCredentials).then((authedUser) => {
         // Call auth complete handler
-        props.onAuth(user);
+        // alert('AuthedUser: ' + JSON.stringify(AuthedUser))
+        props.onAuth(authedUser);
+        return authedUser;
       });
+    },
+
+    signinTEST1: async (user) => {
+      // alert(`-> ssubmitHandlersByType.signin() ${JSON.stringify(user)}`)
+      let res;
+      try {
+        let response = await fetch('/api/auth/signin/', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify(user)
+        })
+        res = await response.json()
+      } catch (err) {
+        console.log(err)
+      }
+      props.onAuth(res.payload || {});
+      return { ...res.payload };
     },
 
     signinAuth0: ({ email, pass }) => {
@@ -36,11 +60,32 @@ function AuthForm(props) {
       });
     },
 
-    signup: ({ email, pass }) => {
+    signup2: ({ email, pass }) => {
       return auth.signup(email, pass).then((user) => {
         // Call auth complete handler
         props.onAuth(user);
       });
+    },
+
+    signup: async (user) => {
+      let res;
+      try {
+        let response = await fetch('/api/users/', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(user)
+        })
+        res = await response.json()
+      } catch (err) {
+        console.log(err)
+      }
+      alert(JSON.stringify(res))
+      props.onAuth(user);
+
+      return res;
     },
 
     forgotpass: ({ email }) => {
@@ -63,28 +108,6 @@ function AuthForm(props) {
           message: "Your password has been changed",
         });
       });
-    },
-
-    signin: async (user) => {
-      // alert(`-> ssubmitHandlersByType.signin() ${JSON.stringify(user)}`)
-      let res;
-      try {
-        let response = await fetch('/api/auth/signin/', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          credentials: 'include',
-          body: JSON.stringify(user)
-        })
-
-        res = await response.json()
-        return { ...res.payload };
-      } catch (err) {
-        console.log(err)
-      }
-      props.onAuth(res.payload || {});
     },
 
     signout: async () => {
@@ -125,10 +148,10 @@ function AuthForm(props) {
     // Call submit handler for auth type
     submitHandlersByType[props.type]({
       email,
-      pass: pass,
-    }).then((payload) => {
-      alert(`Welcome ${JSON.stringify(payload._id)}`)
-      props.onAuth(payload);
+      pass,
+    }).then((authedUser) => {
+      alert(`Welcome ${JSON.stringify(authedUser.email)}`)
+      // props.onAuth(payload);
     }).catch((error) => {
       setPending(false);
       // Show error alert message

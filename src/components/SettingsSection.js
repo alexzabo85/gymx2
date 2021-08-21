@@ -8,7 +8,7 @@ import Alert from "@material-ui/lab/Alert";
 import SettingsGeneral from "./SettingsGeneral";
 import SettingsPassword from "./SettingsPassword";
 import SettingsBilling from "./SettingsBilling";
-import { useAuth } from "./../util/auth.js";
+import { useAuth } from "./../util/myAuth.js";
 
 function SettingsSection(props) {
   const auth = useAuth();

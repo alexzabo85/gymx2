@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PageLoader from "./../components/PageLoader";
 import Alert from "@material-ui/lab/Alert";
-import { useAuth, requireAuth } from "./../util/auth.js";
+import { useAuth, requireAuth } from "./../util/myAuth.js";
 import { useRouter } from "./../util/router.js";
 import { redirectToCheckout } from "./../util/stripe.js";
 

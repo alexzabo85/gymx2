@@ -25,8 +25,7 @@ const signin = async (req, res) => {
 
     const payload = {
       _id: user._id,
-      msg: 'world',
-      yearsOld: user.getYearsOld(),
+      user,
     }
     const token = jwt.sign(payload, config.jwtSecret)
 
