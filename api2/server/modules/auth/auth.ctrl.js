@@ -69,6 +69,16 @@ const authorizedToUpdateProfile = (req, res, next) => {
   }
   next()
 }
+// TODO
+const authorizedToUpdateOrgProfile = (req, res, next) => {
+  // const authorized = req.profile && req.auth && req.profile._id == req.auth._id
+  // if (!(authorized)) {
+  //   return res.status('403').json({
+  //     error: "User is not authorized"
+  //   })
+  // }
+  next()
+}
 
 const authorizedToSendTx = (req, res, next) => {
   const authorized = req.account && req.auth && req.account._ownerId == req.auth._id
@@ -109,6 +119,7 @@ module.exports = {
   signout,
   requireSignin,
   authorizedToUpdateProfile,
+  authorizedToUpdateOrgProfile,
   authorizedToSendTx,
   // getAccountByOwner,
   loopback,

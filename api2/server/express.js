@@ -21,12 +21,14 @@ const compress = require('compression');
 const cors = require('cors');
 const helmet = require('helmet');
 
+const orgRouter = require('./modules/org/org.rtr');
 const authRouter = require('./modules/auth/auth.rtr');
 const userRouter = require('./modules/user/user.rtr');
 const accRouter = require('./modules/account/account.rtr');
 const prodRouter = require('./modules/product/product.rtr');
 const indexRouter = require('./routes/index.rtr');
 const ecRouter = require('./routes/ec.rtr');
+// const orgRouter = require('./routes/ec.rtr');
 // const chainRouter = require('./routes/chain.rtr');
 // const apiRouter = require('./routes/api.routes');
 // import shopRoutes from './routes/shop.routes'
@@ -45,6 +47,7 @@ app.use(helmet())
 app.use(cors())
 
 // mount routes
+app.use('/api/org', orgRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/account', accRouter);

@@ -500,7 +500,7 @@ export default function ProgramPage(props) {
       <div className={classes.root}>
         {list.map((step, idx) => (
           // < >
-          <Accordion key={idx} defaultExpanded={true}>
+          <Accordion key={idx} defaultExpanded={false}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1c-content"

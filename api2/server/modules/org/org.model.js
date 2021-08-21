@@ -208,5 +208,5 @@ UserSchema.methods = {
 }
 
 module.exports = {
-  User: userDbConnection.model('User', UserSchema)
+  Org: userDbConnection.model('User', UserSchema)
 }
